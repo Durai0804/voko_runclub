@@ -83,7 +83,9 @@ export default function CircularGallery({
 
         const scene = new Transform();
         // Smaller images for a more "aesthetic" look
-        const planeGeometry = new Plane(gl, { width: 2.2, height: 3.0, widthSegments: 30 });
+        const planeGeometry = new Plane(gl, { width: 2.55, height: 3.45, widthSegments: 30 });
+
+        const itemSpacing = 2.7;
 
         const meshes: Mesh[] = [];
 
@@ -109,7 +111,7 @@ export default function CircularGallery({
             });
 
             const mesh = new Mesh(gl, { geometry: planeGeometry, program });
-            mesh.position.x = (i - (items.length - 1) / 2) * 2.8;
+            mesh.position.x = (i - (items.length - 1) / 2) * itemSpacing;
             mesh.setParent(scene);
             meshes.push(mesh);
         });
@@ -127,7 +129,7 @@ export default function CircularGallery({
                 targetScroll += e.deltaY * 0.005 * scrollSpeed;
             }
 
-            const limit = (items.length - 1) * 2.8 / 2 + 1.5;
+            const limit = (items.length - 1) * itemSpacing / 2 + 1.5;
             targetScroll = Math.max(-limit, Math.min(limit, targetScroll));
         };
 
@@ -143,7 +145,7 @@ export default function CircularGallery({
             targetScroll -= delta * 0.01 * scrollSpeed;
             startX = e.clientX;
 
-            const limit = (items.length - 1) * 2.8 / 2 + 1.5;
+            const limit = (items.length - 1) * itemSpacing / 2 + 1.5;
             targetScroll = Math.max(-limit, Math.min(limit, targetScroll));
         };
 
@@ -164,7 +166,7 @@ export default function CircularGallery({
 
             // Better way to handle horizontal position based on total scroll
             meshes.forEach((mesh, i) => {
-                mesh.position.x = (i - (items.length - 1) / 2) * 2.8 - scroll;
+                mesh.position.x = (i - (items.length - 1) / 2) * itemSpacing - scroll;
             });
 
             renderer.render({ scene, camera });
@@ -198,7 +200,7 @@ export default function CircularGallery({
 
     return (
         <div ref={containerRef} className="w-full h-full relative overflow-hidden bg-transparent cursor-grab transition-opacity duration-1000">
-            <div className="absolute bottom-12 left-0 w-full flex justify-center pointer-events-none">
+            <div className="absolute bottom-4 left-0 w-full flex justify-center pointer-events-none">
                 <div className="flex flex-col items-center gap-2">
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-black/20 animate-pulse">
                         Drag to Orbit
