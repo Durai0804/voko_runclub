@@ -72,27 +72,27 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ events }) => {
   };
 
   return (
-    <section className="w-full bg-[var(--voko-bg)] py-12 pb-20 md:pb-24">
+    <section className="w-full bg-[var(--voko-bg)] py-12 pb-20 md:pb-24 overflow-visible">
       <div
-        className="w-full mx-auto px-3 sm:px-6 md:px-8 lg:px-10"
+        className="w-full mx-auto px-3 sm:px-6 md:px-8 lg:px-10 overflow-visible"
         style={{ maxWidth: 'min(1700px, calc(100vw - 32px))' }}
       >
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-visible">
           <div
             key={animationKey}
             ref={trackRef}
-            className="flex gap-px w-max will-change-[transform] animate-[scroll-left_20s_linear_infinite]"
+            className="flex gap-px w-max will-change-[transform] animate-[scroll-left_20s_linear_infinite] overflow-visible"
           >
             {LOOPED_EVENTS.map((event, idx) => (
               <div
                 key={`${event.id}-${idx}-${animationKey}`}
-                className="relative flex-shrink-0 w-[80vw] sm:w-[55vw] md:w-[40vw] lg:w-[32vw] xl:w-[28vw] aspect-[4/5] max-h-[85vh] overflow-hidden rounded-[32px] border border-black/5 bg-black/5 shadow-sm transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-2 hover:shadow-2xl group cursor-pointer"
+                className="relative flex-shrink-0 w-[80vw] sm:w-[55vw] md:w-[40vw] lg:w-[32vw] xl:w-[28vw] aspect-[4/5] max-h-[85vh] rounded-[32px] border border-black/5 bg-black/5 shadow-sm transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-2 hover:shadow-2xl group cursor-pointer"
                 onClick={() => navigate(`/event/${event.id}`)}
               >
                 <img
                   src={event.image}
                   alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110"
+                  className="w-full h-full object-contain bg-[#111] transition-transform duration-1000 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
                   loading="lazy"
                 />
 
@@ -106,15 +106,15 @@ export const EventsCarousel: React.FC<EventsCarouselProps> = ({ events }) => {
                   </div>
                 </div>
 
-                {/* Top Labels (Sticker Style) */}
-                <div className="absolute top-6 left-6 flex flex-col gap-0 items-start">
-                  <div className="bg-[var(--voko-accent)] text-black border-2 border-black px-4 py-1.5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-1">
-                    <div className="text-[12px] font-black uppercase leading-none tracking-wider">
+                {/* Top Labels (Sticker Style) - Adjusted for Visibility */}
+                <div className="absolute top-4 left-4 flex flex-col gap-0 items-start z-20 pointer-events-none">
+                  <div className="bg-[var(--voko-accent)] text-black border-[1.5px] border-black px-3 py-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] -rotate-1">
+                    <div className="text-[10px] md:text-[11px] font-black uppercase leading-none tracking-wider">
                       {event.date}
                     </div>
                   </div>
-                  <div className="bg-[var(--voko-bg)] text-[var(--voko-text)] border-2 border-t-0 border-black px-4 py-1.5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-1 -mt-0.5">
-                    <div className="text-[11px] font-bold uppercase leading-none tracking-widest">
+                  <div className="bg-[var(--voko-bg)] text-[var(--voko-text)] border-[1.5px] border-t-0 border-black px-3 py-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rotate-1 -mt-0.5">
+                    <div className="text-[9px] md:text-[10px] font-bold uppercase leading-none tracking-widest">
                       {event.time}
                     </div>
                   </div>

@@ -12,11 +12,33 @@ export const Navbar: React.FC = () => {
   const { user, role } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const [pendingRoute, setPendingRoute] = useState<string | null>(null);
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: sectionId } });
+      return;
+    }
+    const section = document.getElementById(sectionId);
+    section?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null;
+    if (location.pathname === '/' && state?.scrollTo) {
+      const sectionId = state.scrollTo;
+      setTimeout(() => {
+        const section = document.getElementById(sectionId);
+        section?.scrollIntoView({ behavior: 'smooth' });
+        // Clear state to prevent scrolling on every render/navigation
+        window.history.replaceState({}, document.title);
+      }, 100);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (user && pendingRoute) {
@@ -45,13 +67,29 @@ export const Navbar: React.FC = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center">
-          <Link
-            to="/"
+          <button
+            onClick={() => scrollToSection('hero-section')}
             className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border border-black leading-none group"
           >
             <span className="relative z-10">DISCOVER</span>
             <span className="absolute inset-0 bg-[var(--voko-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-          </Link>
+          </button>
+
+          <button
+            onClick={() => scrollToSection('carousel-section')}
+            className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group"
+          >
+            <span className="relative z-10">SERIES</span>
+            <span className="absolute inset-0 bg-[var(--voko-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+          </button>
+
+          <button
+            onClick={() => scrollToSection('events-grid-section')}
+            className="relative overflow-hidden bg-white text-black h-[34px] px-3 flex items-center text-[11px] font-medium uppercase border-l-0 border border-black leading-none group"
+          >
+            <span className="relative z-10">EVENTS</span>
+            <span className="absolute inset-0 bg-[var(--voko-accent)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+          </button>
 
           {/* Theme Toggle */}
           <button
@@ -145,16 +183,37 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
 
-            {/* Menu items */}
             <div className="flex-1 flex flex-col bg-white">
-              <Link
-                to="/"
-                onClick={() => setIsMobileMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  scrollToSection('hero-section');
+                }}
                 className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in"
                 style={{ animationDelay: '0.1s', animationFillMode: 'both' }}
               >
                 DISCOVER
-              </Link>
+              </button>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  scrollToSection('carousel-section');
+                }}
+                className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in"
+                style={{ animationDelay: '0.15s', animationFillMode: 'both' }}
+              >
+                SERIES
+              </button>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  scrollToSection('events-grid-section');
+                }}
+                className="flex-1 flex items-center justify-center text-[#1A1A1A] text-[17px] font-medium uppercase border-b border-black tracking-[-0.34px] animate-fade-in"
+                style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+              >
+                EVENTS
+              </button>
               {role === 'admin' && (
                 <button
                   onClick={() => {
